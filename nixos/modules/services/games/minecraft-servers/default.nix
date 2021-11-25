@@ -148,11 +148,12 @@ in {
         useDefaultShell = true;
         createHome = true;
         home = "/var/lib/${mkInstanceName name}";
-        group = "minecraft";
         openssh.authorizedKeys.keys =
           optionals (icfg.rsyncSSHKeys != [])
             map (x: rsyncCmd + " " + x) icfg.rsyncSSHKeys;
       });
+      
+      users.groups = eachEnabledInstance;
 
     networking.firewall.allowedUDPPorts = queryPorts;
     networking.firewall.allowedTCPPorts = serverPorts ++ queryPorts ++ rconPorts;
